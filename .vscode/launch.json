@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug Napp Solutions Web Api",
+        "type": "go",
+        "request": "launch",
+        "mode": "debug",
+        "program": "./cmd",
+        "cwd": "."
+      },      
+    ]
+  }
