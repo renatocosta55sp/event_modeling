@@ -7,7 +7,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/sirupsen/logrus"
-	"github.org/napp/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/internal/domain/product"
 )
 
 const ProductTableName = "products"
@@ -98,12 +98,14 @@ func (r *RepoProduct) Remove(entity *product.ProductEntity, ctx context.Context)
 	return nil
 }
 
-func (r *RepoProduct) GetByCode(code int, ctx context.Context) (*product.ProductEntity, error) {
+func (r *RepoProduct) GetById(id string, ctx context.Context) (*product.ProductEntity, error) {
 	var p product.ProductEntity
-	err := r.Conn.QueryRow(ctx, "select aggregate_identifier, code, name, stock, total_stock, cut_stock, available_stock, price_from, price_to, created_at, updated_at, created_by, updated_by from products where code=$1", code).Scan(&p.ID, &p.Code, &p.Name, &p.Stock, &p.TotalStock, &p.CutStock, &p.AvailableStock, &p.PriceFrom, &p.PriceTo, &p.CreatedAt, &p.UpdatedAt, &p.CreatedBy, &p.UpdatedBy)
+	err := r.Conn.QueryRow(ctx, "select aggregate_identifier, code, name, stock, total_stock, cut_stock, available_stock, price_from, price_to, created_at, updated_at, created_by, updated_by from products where aggregate_identifier=$1", id).Scan(&p.ID, &p.Code, &p.Name, &p.Stock, &p.TotalStock, &p.CutStock, &p.AvailableStock, &p.PriceFrom, &p.PriceTo, &p.CreatedAt, &p.UpdatedAt, &p.CreatedBy, &p.UpdatedBy)
+
 	if err != nil {
 		return nil, err
 	}
+
 	return &p, nil
 }
 

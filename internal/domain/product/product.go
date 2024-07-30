@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.org/napp/product-management/internal/domain/product/events"
-	"github.org/napp/product-management/pkg/building_blocks/domain"
-	"github.org/napp/product-management/pkg/support"
+	"github.org/eventmodeling/product-management/internal/domain/product/events"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/domain"
+	"github.org/eventmodeling/product-management/pkg/support"
 )
 
 type Product interface {

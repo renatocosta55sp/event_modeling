@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"github.org/napp/product-management/pkg/building_blocks/domain"
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/domain"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 type EventHandlers struct {

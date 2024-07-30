@@ -1,7 +1,7 @@
 package bus
 
 import (
-	"github.org/napp/product-management/pkg/building_blocks/domain"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/domain"
 )
 
 // EventBus represents the event bus that handles event subscription and dispatching

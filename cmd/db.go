@@ -6,7 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/sirupsen/logrus"
-	"github.org/napp/product-management/internal/infra/config"
+	"github.org/eventmodeling/product-management/internal/infra/config"
 )
 
 var (

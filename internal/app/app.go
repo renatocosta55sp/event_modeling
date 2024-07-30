@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.org/napp/product-management/internal/app/command"
-	"github.org/napp/product-management/internal/app/query"
+	"github.org/eventmodeling/product-management/internal/app/command"
+	"github.org/eventmodeling/product-management/internal/app/query"
 )
 
 type Application struct {

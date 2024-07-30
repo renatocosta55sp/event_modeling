@@ -4,11 +4,11 @@ import (
 	"context"
 
 	"github.com/google/uuid"
-	"github.org/napp/product-management/internal/domain/product"
-	"github.org/napp/product-management/pkg/building_blocks/app"
+	"github.org/eventmodeling/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/app"
 
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
-	"github.org/napp/product-management/pkg/support"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/pkg/support"
 )
 
 type CreateProductCommand struct {

@@ -3,20 +3,19 @@ package http
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"
 	"github.com/sirupsen/logrus"
-	"github.org/napp/product-management/internal/app/command"
-	"github.org/napp/product-management/internal/app/query"
-	"github.org/napp/product-management/internal/domain/product/events"
-	"github.org/napp/product-management/internal/infra/adapters/persistence"
-	"github.org/napp/product-management/internal/infra/config"
-	"github.org/napp/product-management/internal/infra/service"
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/internal/app/command"
+	"github.org/eventmodeling/product-management/internal/app/query"
+	"github.org/eventmodeling/product-management/internal/domain/product/events"
+	"github.org/eventmodeling/product-management/internal/infra/adapters/persistence"
+	"github.org/eventmodeling/product-management/internal/infra/config"
+	"github.org/eventmodeling/product-management/internal/infra/service"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 type HttpServer struct {
@@ -78,7 +77,12 @@ func (h HttpServer) CreateProduct(ctx *gin.Context) {
 
 func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 
-	code, _ := strconv.Atoi(ctx.Param("code"))
+	id := ctx.Param("id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID parameter is required"})
+		return
+	}
 
 	updateProductRequest := UpdateProductRequest{}
 	if err := ctx.ShouldBindJSON(&updateProductRequest); err != nil {
@@ -100,7 +104,7 @@ func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 	wg.Add(1)
 
 	_, err := wireApp.Commands.UpdateProduct.Handle(ctx, command.UpdateProductCommand{
-		Code:       code,
+		Id:         id,
 		Name:       updateProductRequest.Name,
 		Stock:      updateProductRequest.Stock,
 		TotalStock: updateProductRequest.TotalStock,
@@ -130,7 +134,12 @@ func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 
 func (h HttpServer) DeleteProduct(ctx *gin.Context) {
 
-	code, _ := strconv.Atoi(ctx.Param("code"))
+	id := ctx.Param("id")
+
+	if id == "" {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID parameter is required"})
+		return
+	}
 
 	var wg sync.WaitGroup
 	eventBus := bus.NewEventBus()
@@ -144,7 +153,7 @@ func (h HttpServer) DeleteProduct(ctx *gin.Context) {
 	wg.Add(1)
 
 	_, err := wireApp.Commands.DeleteProduct.Handle(ctx, command.DeleteProductCommand{
-		Code: code,
+		Id: id,
 	})
 	if err != nil {
 		logrus.WithError(err).Error("failed to validate product on command")

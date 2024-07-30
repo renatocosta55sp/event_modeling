@@ -4,15 +4,15 @@ import (
 	"context"
 	"sync"
 
-	"github.org/napp/product-management/internal/app"
-	"github.org/napp/product-management/internal/app/command"
-	"github.org/napp/product-management/internal/app/eventhandler"
-	"github.org/napp/product-management/internal/app/query"
-	"github.org/napp/product-management/internal/domain/product"
-	"github.org/napp/product-management/internal/domain/product/events"
-	appBB "github.org/napp/product-management/pkg/building_blocks/app"
-	"github.org/napp/product-management/pkg/building_blocks/domain"
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/internal/app"
+	"github.org/eventmodeling/product-management/internal/app/command"
+	"github.org/eventmodeling/product-management/internal/app/eventhandler"
+	"github.org/eventmodeling/product-management/internal/app/query"
+	"github.org/eventmodeling/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/internal/domain/product/events"
+	appBB "github.org/eventmodeling/product-management/pkg/building_blocks/app"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/domain"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 func NewApplication(ctx context.Context, wg *sync.WaitGroup, eventBus *bus.EventBus, repo product.ProductRepository) app.Application {

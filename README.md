@@ -1,4 +1,4 @@
-# Napp Product management ⚡️
+# Event Modeling ⚡️
 
 ## Let's Run the Application 
 

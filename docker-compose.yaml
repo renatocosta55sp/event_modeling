@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:latest
-    container_name: napp_postgres
+    container_name: event_modeling_postgres
     ports:
       - 5432:5432
     restart: always
@@ -14,7 +14,7 @@ services:
     networks:
       - fullstack
   api:
-    container_name: napp_api
+    container_name: event_modeling_api
     build: .
     ports:
       - 8888:8888

@@ -8,12 +8,12 @@ import (
 	"time"
 
 	"github.com/testcontainers/testcontainers-go"
-	"github.org/napp/product-management/internal/app"
-	"github.org/napp/product-management/internal/app/command"
-	"github.org/napp/product-management/internal/domain/product/events"
-	"github.org/napp/product-management/internal/infra/adapters/persistence"
-	"github.org/napp/product-management/internal/infra/service"
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/internal/app"
+	"github.org/eventmodeling/product-management/internal/app/command"
+	"github.org/eventmodeling/product-management/internal/domain/product/events"
+	"github.org/eventmodeling/product-management/internal/infra/adapters/persistence"
+	"github.org/eventmodeling/product-management/internal/infra/service"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 var ag = &bus.AggregateRootTestCase{}

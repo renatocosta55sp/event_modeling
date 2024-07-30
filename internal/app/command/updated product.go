@@ -3,15 +3,15 @@ package command
 import (
 	"context"
 
-	"github.org/napp/product-management/internal/domain/product"
-	"github.org/napp/product-management/pkg/building_blocks/app"
-	"github.org/napp/product-management/pkg/support"
+	"github.org/eventmodeling/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/app"
+	"github.org/eventmodeling/product-management/pkg/support"
 
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 type UpdateProductCommand struct {
-	Code       int
+	Id         string
 	Name       string
 	Stock      int
 	TotalStock int
@@ -38,7 +38,7 @@ func NewUpdateProductHandler(eventPublisher *bus.EventPublisher, repo product.Pr
 
 func (h updateProductHandler) Handle(ctx context.Context, cmd UpdateProductCommand) (product.Product, error) {
 
-	productRead, err := h.repo.GetByCode(cmd.Code, ctx)
+	productRead, err := h.repo.GetById(cmd.Id, ctx)
 
 	if err != nil {
 		return nil, err

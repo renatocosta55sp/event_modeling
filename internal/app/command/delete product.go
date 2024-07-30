@@ -3,14 +3,14 @@ package command
 import (
 	"context"
 
-	"github.org/napp/product-management/internal/domain/product"
-	"github.org/napp/product-management/pkg/building_blocks/app"
+	"github.org/eventmodeling/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/app"
 
-	"github.org/napp/product-management/pkg/building_blocks/infra/bus"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/infra/bus"
 )
 
 type DeleteProductCommand struct {
-	Code int
+	Id string
 }
 
 type DeleteProductHandler app.CommandHandler[DeleteProductCommand, product.Product]
@@ -29,7 +29,7 @@ func NewDeleteProductHandler(eventPublisher *bus.EventPublisher, repo product.Pr
 
 func (h deleteProductHandler) Handle(ctx context.Context, cmd DeleteProductCommand) (product.Product, error) {
 
-	productRead, err := h.repo.GetByCode(cmd.Code, ctx)
+	productRead, err := h.repo.GetById(cmd.Id, ctx)
 
 	if err != nil {
 		return nil, err

@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 
-	"github.org/napp/product-management/pkg/building_blocks/domain"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/domain"
 )
 
 type EventHandleable interface {

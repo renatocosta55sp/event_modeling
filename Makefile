@@ -15,3 +15,6 @@ migrate-up:
 
 migrate-down:
 	migrate -path=database/migrations -database "$(DATABASE_URL)" -verbose down
+
+lint:
+	go vet ./...

@@ -8,8 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"github.org/napp/product-management/internal/infra/config"
-	"github.org/napp/product-management/internal/infra/ports/http"
+	"github.org/eventmodeling/product-management/internal/infra/config"
+	"github.org/eventmodeling/product-management/internal/infra/ports/http"
 )
 
 var (

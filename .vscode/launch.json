@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Debug Napp Solutions Web Api",
+        "name": "Debug Event Modeling",
         "type": "go",
         "request": "launch",
         "mode": "debug",

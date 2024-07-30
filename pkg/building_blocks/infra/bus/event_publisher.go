@@ -1,6 +1,6 @@
 package bus
 
-import "github.org/napp/product-management/pkg/building_blocks/domain"
+import "github.org/eventmodeling/product-management/pkg/building_blocks/domain"
 
 type EventPublisher struct {
 	eventBus *EventBus

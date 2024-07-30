@@ -3,8 +3,8 @@ package query
 import (
 	"context"
 
-	"github.org/napp/product-management/internal/domain/product"
-	"github.org/napp/product-management/pkg/building_blocks/app"
+	"github.org/eventmodeling/product-management/internal/domain/product"
+	"github.org/eventmodeling/product-management/pkg/building_blocks/app"
 )
 
 type AvailableProducts struct {

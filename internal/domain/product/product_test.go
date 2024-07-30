@@ -3,8 +3,9 @@ package product
 import (
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.org/napp/product-management/pkg/support"
+	"github.org/eventmodeling/product-management/pkg/support"
 )
 
 func TestInvalidArguments(t *testing.T) {
@@ -81,6 +82,7 @@ func TestInvalidArguments(t *testing.T) {
 
 	for _, test := range tests {
 		_, err := NewProduct(
+			uuid.New(),
 			test.Code,
 			test.Name,
 			test.Stock,
