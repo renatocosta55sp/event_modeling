@@ -1,13 +1,12 @@
 package http
 
 import (
-	"fmt"
 	"net/http"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 	"github.org/eventmodeling/product-management/internal/app/command"
 	"github.org/eventmodeling/product-management/internal/app/query"
@@ -19,16 +18,18 @@ import (
 )
 
 type HttpServer struct {
-	Db *pgx.Conn
+	Db *pgxpool.Pool
 }
 
 func (h HttpServer) CreateProduct(ctx *gin.Context) {
 
-	createProductRequest := CreateProductRequest{}
-	if err := ctx.ShouldBindJSON(&createProductRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	requestData, exists := ctx.Get(requestDataKey)
+	if !exists {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Request data not found"})
 		return
 	}
+
+	data := requestData.(CreateProductRequest)
 
 	var wg sync.WaitGroup
 	eventBus := bus.NewEventBus()
@@ -42,15 +43,15 @@ func (h HttpServer) CreateProduct(ctx *gin.Context) {
 	currentDateTime := time.Now().Format("2006-01-02 15:04:05.000")
 
 	wg.Add(1)
-	fmt.Println(createProductRequest.PriceFrom)
+
 	_, err := wireApp.Commands.CreateProduct.Handle(ctx, command.CreateProductCommand{
 		Name:       "Product 0102023",
-		Code:       createProductRequest.Code,
-		Stock:      createProductRequest.Stock,
-		TotalStock: createProductRequest.TotalStock,
-		CutStock:   createProductRequest.CutStock,
-		PriceFrom:  createProductRequest.PriceFrom,
-		PriceTo:    createProductRequest.PriceTo,
+		Code:       data.Code,
+		Stock:      data.Stock,
+		TotalStock: data.TotalStock,
+		CutStock:   data.CutStock,
+		PriceFrom:  data.PriceFrom,
+		PriceTo:    data.PriceTo,
 		CreatedBy:  123,
 		UpdatedBy:  123,
 		CreatedAt:  currentDateTime,
@@ -77,18 +78,13 @@ func (h HttpServer) CreateProduct(ctx *gin.Context) {
 
 func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 
-	id := ctx.Param("id")
-
-	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID parameter is required"})
+	requestData, exists := ctx.Get(requestDataKey)
+	if !exists {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Request data not found"})
 		return
 	}
 
-	updateProductRequest := UpdateProductRequest{}
-	if err := ctx.ShouldBindJSON(&updateProductRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+	data := requestData.(UpdateProductRequest)
 
 	currentDateTime := time.Now().Format("2006-01-02 15:04:05.000")
 
@@ -104,13 +100,13 @@ func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 	wg.Add(1)
 
 	_, err := wireApp.Commands.UpdateProduct.Handle(ctx, command.UpdateProductCommand{
-		Id:         id,
-		Name:       updateProductRequest.Name,
-		Stock:      updateProductRequest.Stock,
-		TotalStock: updateProductRequest.TotalStock,
-		CutStock:   updateProductRequest.CutStock,
-		PriceFrom:  updateProductRequest.PriceFrom,
-		PriceTo:    updateProductRequest.PriceTo,
+		Id:         data.Id,
+		Name:       data.Name,
+		Stock:      data.Stock,
+		TotalStock: data.TotalStock,
+		CutStock:   data.CutStock,
+		PriceFrom:  data.PriceFrom,
+		PriceTo:    data.PriceTo,
 		UpdatedBy:  12345,
 		UpdatedAt:  currentDateTime,
 	})
@@ -134,12 +130,13 @@ func (h HttpServer) UpdateProduct(ctx *gin.Context) {
 
 func (h HttpServer) DeleteProduct(ctx *gin.Context) {
 
-	id := ctx.Param("id")
-
-	if id == "" {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID parameter is required"})
+	requestData, exists := ctx.Get(requestDataKey)
+	if !exists {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Request data not found"})
 		return
 	}
+
+	data := requestData.(DeleteProductRequest)
 
 	var wg sync.WaitGroup
 	eventBus := bus.NewEventBus()
@@ -153,7 +150,7 @@ func (h HttpServer) DeleteProduct(ctx *gin.Context) {
 	wg.Add(1)
 
 	_, err := wireApp.Commands.DeleteProduct.Handle(ctx, command.DeleteProductCommand{
-		Id: id,
+		Id: data.Id,
 	})
 	if err != nil {
 		logrus.WithError(err).Error("failed to validate product on command")

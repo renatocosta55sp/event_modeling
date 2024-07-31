@@ -33,14 +33,12 @@ func (el *EventListener) Listen(ctx context.Context, eventChan <-chan domain.Eve
 	for {
 		select {
 		case event := <-eventChan:
-
 			for _, handler := range el.eventHandlers {
 
 				if handler.EventName == event.Type {
 					el.dispatchHandlers(ctx, event, handler)
 				}
 			}
-
 		}
 
 	}

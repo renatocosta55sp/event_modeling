@@ -8,13 +8,13 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func InitTestContainer() (*pgx.Conn, testcontainers.Container, error) {
+func InitTestContainer() (*pgxpool.Pool, testcontainers.Container, error) {
 
 	ctx := context.Background()
 
@@ -54,7 +54,8 @@ func InitTestContainer() (*pgx.Conn, testcontainers.Container, error) {
 
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", dbUser, dbPassword, host, port.Port(), dbName)
 
-	conn, err := pgx.Connect(ctx, connStr)
+	conn, err := pgxpool.New(ctx, connStr)
+
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		return nil, pgContainer, err

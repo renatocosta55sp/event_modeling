@@ -39,7 +39,7 @@ func main() {
 		config.Config.GetString("DB_NAME"),
 	)
 
-	defer db.Close(ctx)
+	defer db.Close()
 
 	server := gin.Default()
 	h := http.HttpServer{Db: db}

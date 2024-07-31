@@ -25,7 +25,7 @@ var pgContainer testcontainers.Container
 
 func init() {
 
-	ctx = context.Background() // Initialize context here
+	ctx = context.Background()
 
 	dbConn, container, err := InitTestContainer()
 	if err != nil {

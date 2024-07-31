@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/sirupsen/logrus"
 	"github.org/eventmodeling/product-management/internal/domain/product"
 )
@@ -13,7 +15,7 @@ import (
 const ProductTableName = "products"
 
 type RepoProduct struct {
-	Conn     *pgx.Conn
+	Conn     *pgxpool.Pool
 	DBSchema string
 }
 
@@ -39,12 +41,17 @@ func (r *RepoProduct) Add(entity *product.ProductEntity, ctx context.Context) (i
 
 	logrus.Info("args", args)
 
+	// Use context with timeout for query
+	queryCtx, queryCancel := context.WithTimeout(ctx, 5*time.Second)
+	defer queryCancel()
+
 	var product_id int
-	err := r.Conn.QueryRow(ctx, query, args).Scan(&product_id)
+	err := r.Conn.QueryRow(queryCtx, query, args).Scan(&product_id)
 
 	if err != nil {
 		return 0, fmt.Errorf("unable to insert row: %w", err)
 	}
+
 	return product_id, nil
 }
 
@@ -109,6 +116,6 @@ func (r *RepoProduct) GetById(id string, ctx context.Context) (*product.ProductE
 	return &p, nil
 }
 
-func NewProductRepository(conn *pgx.Conn, dbSchema string) product.ProductRepository {
+func NewProductRepository(conn *pgxpool.Pool, dbSchema string) product.ProductRepository {
 	return &RepoProduct{Conn: conn, DBSchema: dbSchema}
 }

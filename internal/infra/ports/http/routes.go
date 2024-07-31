@@ -7,8 +7,8 @@ import (
 func InitRoutes(
 	r *gin.RouterGroup,
 	controller HttpServer) {
-	r.POST("/products", controller.CreateProduct)
-	r.DELETE("/products/:id", controller.DeleteProduct)
-	r.PUT("/products/:id", controller.UpdateProduct)
+	r.POST("/products", createProductValidator, controller.CreateProduct)
+	r.DELETE("/products/:id", deleteProductValidator, controller.DeleteProduct)
+	r.PUT("/products/:id", updateProductValidator, controller.UpdateProduct)
 	r.GET("/products", controller.GetProducts)
 }
