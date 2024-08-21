@@ -9,9 +9,9 @@ import (
 	"github.org/eventmodeling/ecommerce/pkg/building_blocks/slice"
 )
 
-func WireApp(ctx context.Context, eventRaisedChan chan bus.EventRaised, eventBus *bus.EventBus) *bus.EventPublisher {
+func WireApp(ctx context.Context, eventBus *bus.EventBus) (eventRaisedChan chan bus.EventResult) {
 
-	eventChan := make(chan domain.Event, 1)
+	eventChan := make(chan domain.Event)
 
 	eventBus.Subscribe(events.CartCreatedEvent, eventChan)
 	eventBus.Subscribe(events.ItemAddedEvent, eventChan)
@@ -28,10 +28,10 @@ func WireApp(ctx context.Context, eventRaisedChan chan bus.EventRaised, eventBus
 		},
 	}
 
+	eventRaisedChan = make(chan bus.EventResult)
+
 	eventListener := slice.NewEventListener(eventHandlers, eventBus, eventRaisedChan)
 	go eventListener.Listen(ctx, eventChan)
 
-	eventPublisher := bus.NewEventPublisher(eventBus)
-
-	return eventPublisher
+	return
 }

@@ -16,10 +16,10 @@ type EventHandlers struct {
 type EventListener struct {
 	eventHandlers   []EventHandlers
 	eventBus        *bus.EventBus
-	eventRaisedChan chan bus.EventRaised
+	eventRaisedChan chan bus.EventResult
 }
 
-func NewEventListener(eventHandlers []EventHandlers, eventBus *bus.EventBus, eventsRaisedChan chan bus.EventRaised) *EventListener {
+func NewEventListener(eventHandlers []EventHandlers, eventBus *bus.EventBus, eventsRaisedChan chan bus.EventResult) *EventListener {
 	return &EventListener{
 		eventHandlers:   eventHandlers,
 		eventBus:        eventBus,
@@ -47,7 +47,7 @@ func (el *EventListener) dispatchToHandlers(ctx context.Context, event domain.Ev
 	for _, evh := range el.eventHandlers {
 		if evh.EventName == event.Type {
 			err := evh.Handler.Handle(ctx, event)
-			eventRaised := bus.EventRaised{
+			eventRaised := bus.EventResult{
 				Event: event,
 			}
 
