@@ -55,7 +55,11 @@ func runCommand() {
 
 	assert.Equal(ag.T, commandResult, commandResultToCompare, "The CommandResult should be equal")
 
-	err = slice.GenericCommandHandler{}.Handle(ctxCancFunc, eventBus, eventResultChan, cart.Events)
+	err = (&slice.GenericCommandHandler{
+		EventBus:        eventBus,
+		CtxCancFunc:     ctxCancFunc,
+		EventResultChan: eventResultChan,
+	}).Handle(cart.Events)
 
 	if err != nil {
 		ag.T.Fatal(err)
