@@ -16,7 +16,7 @@ func WireApp(ctx context.Context, eventBus *bus.EventBus) (eventRaisedChan chan 
 	eventBus.Subscribe(events.CartCreatedEvent, eventChan)
 	eventBus.Subscribe(events.ItemAddedEvent, eventChan)
 
-	eventHandlers := []slice.EventHandlers{
+	eventHandlers := []slice.EventHandler{
 		{
 			EventName: events.CartCreatedEvent,
 			Handler:   NewCartEventHandler(),

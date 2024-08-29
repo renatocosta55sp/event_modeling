@@ -7,63 +7,61 @@ import (
 	"github.org/eventmodeling/ecommerce/pkg/building_blocks/infra/bus"
 )
 
-type EventHandlers struct {
+type EventHandler struct {
 	EventName string
 	Handler   EventHandleable
 	EndCycle  bool
 }
 
 type EventListener struct {
-	eventHandlers   []EventHandlers
+	eventHandlers   []EventHandler
 	eventBus        *bus.EventBus
-	eventRaisedChan chan bus.EventResult
+	eventResultChan chan bus.EventResult
 }
 
-func NewEventListener(eventHandlers []EventHandlers, eventBus *bus.EventBus, eventsRaisedChan chan bus.EventResult) *EventListener {
+func NewEventListener(eventHandlers []EventHandler, eventBus *bus.EventBus, eventsResultChan chan bus.EventResult) *EventListener {
 	return &EventListener{
 		eventHandlers:   eventHandlers,
 		eventBus:        eventBus,
-		eventRaisedChan: eventsRaisedChan,
+		eventResultChan: eventsResultChan,
 	}
 }
 
+// Listen listens for incoming events and processes them
 func (el *EventListener) Listen(ctx context.Context, eventChan <-chan domain.Event) {
 
 	for {
 		select {
 		case event := <-eventChan:
-			el.dispatchToHandlers(ctx, event)
+			go el.dispatchToHandlers(ctx, event)
 		case <-ctx.Done():
-			// Signal completion
-			close(el.eventRaisedChan)
+			close(el.eventResultChan)
 			return
 		}
 	}
 
 }
 
-// handleHandlers dispatches the event to the event handlers
+// dispatchToHandlers dispatches the event to the appropriate event handlers
 func (el *EventListener) dispatchToHandlers(ctx context.Context, event domain.Event) {
-	for _, evh := range el.eventHandlers {
-		if evh.EventName == event.Type {
-			err := evh.Handler.Handle(ctx, event)
-			eventRaised := bus.EventResult{
-				Event: event,
-			}
+	for _, handler := range el.eventHandlers {
+		if handler.EventName == event.Type {
 
-			if err != nil {
-				eventRaised.Err = err
-				el.eventRaisedChan <- eventRaised
-				return
-			}
+			go func(handler EventHandler) {
 
-			if evh.EndCycle {
-				eventRaised.Event = event
-				el.eventRaisedChan <- eventRaised
-				return
-			}
+				err := handler.Handler.Handle(ctx, event)
+				eventResult := bus.EventResult{Event: event}
+				if err != nil {
+					eventResult.Err = err
+				}
+
+				el.eventResultChan <- eventResult
+				if handler.EndCycle {
+					return
+				}
+
+			}(handler)
 
 		}
 	}
-
 }
