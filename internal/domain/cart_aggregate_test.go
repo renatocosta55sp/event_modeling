@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/renatocosta55sp/eventmodeling/internal/domain/commands"
 	"github.com/stretchr/testify/assert"
-	"github.org/eventmodeling/ecommerce/internal/domain/commands"
 )
 
 func TestInvalidArguments(t *testing.T) {

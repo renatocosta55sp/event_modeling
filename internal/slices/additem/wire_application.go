@@ -3,10 +3,10 @@ package additem
 import (
 	"context"
 
-	"github.org/eventmodeling/ecommerce/internal/events"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/domain"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/infra/bus"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/slice"
+	"github.com/renatocosta55sp/eventmodeling/internal/events"
+	"github.com/renatocosta55sp/modeling/domain"
+	"github.com/renatocosta55sp/modeling/infra/bus"
+	"github.com/renatocosta55sp/modeling/slice"
 )
 
 func WireApp(ctx context.Context, eventBus *bus.EventBus) (eventRaisedChan chan bus.EventResult) {

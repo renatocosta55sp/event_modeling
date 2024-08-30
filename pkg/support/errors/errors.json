@@ -1,6 +1,0 @@
-{
-  "error.cart.name.required": "the name cannot be empty",
-  "error.cart.price.priceless": "the price must be greater than zero",
-  "error.cart.cartitems.exceeded": "only 3 items can be added",
-  "error.cart.item.notfound": "item %s not in the Cart"
-}

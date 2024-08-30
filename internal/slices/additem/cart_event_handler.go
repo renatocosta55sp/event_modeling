@@ -3,8 +3,8 @@ package additem
 import (
 	"context"
 
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/domain"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/slice"
+	"github.com/renatocosta55sp/modeling/domain"
+	"github.com/renatocosta55sp/modeling/slice"
 )
 
 type CartEventHandler struct {

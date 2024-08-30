@@ -6,14 +6,13 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/renatocosta55sp/eventmodeling/internal/domain"
+	"github.com/renatocosta55sp/eventmodeling/internal/domain/commands"
+	"github.com/renatocosta55sp/eventmodeling/internal/events"
+	"github.com/renatocosta55sp/eventmodeling/internal/slices/additem"
+	"github.com/renatocosta55sp/modeling/infra/bus"
+	"github.com/renatocosta55sp/modeling/slice"
 	"github.com/stretchr/testify/assert"
-	"github.org/eventmodeling/ecommerce/internal/domain"
-
-	"github.org/eventmodeling/ecommerce/internal/domain/commands"
-	"github.org/eventmodeling/ecommerce/internal/events"
-	"github.org/eventmodeling/ecommerce/internal/slices/additem"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/infra/bus"
-	"github.org/eventmodeling/ecommerce/pkg/building_blocks/slice"
 )
 
 var ag = &bus.AggregateRootTestCase{}
